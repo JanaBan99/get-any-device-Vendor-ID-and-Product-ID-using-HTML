@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COM Port Information</title>
+</head>
+<body>
+
+<h1>COM Port Information</h1>
+
+<button onclick="connectToDevice()">Connect to Device</button>
+
+<!-- Display Vendor ID and Product ID -->
+<p id="vendorId">Vendor ID: </p>
+<p id="productId">Product ID: </p>
+
+<script>
+    async function connectToDevice() {
+        try {
+            const port = await navigator.serial.requestPort();
+            const { usbVendorId, usbProductId } = port.getInfo();
+            
+            // Display decimal values
+            document.getElementById('vendorId').innerText = `Vendor ID: ${usbVendorId}`;
+            document.getElementById('productId').innerText = `Product ID: ${usbProductId}`;
+            
+            // Display hexadecimal values
+            document.getElementById('vendorId').innerText += `, Hex: 0x${usbVendorId.toString(16)}`;
+            document.getElementById('productId').innerText += `, Hex: 0x${usbProductId.toString(16)}`;
+            
+            // You can now use the 'port' object to communicate with the device.
+            // For example, you can read and write data to the device.
+
+            // Uncomment the following lines if you want to read data from the device.
+            // const reader = port.readable.getReader();
+            // while (true) {
+            //     const { value, done } = await reader.read();
+            //     if (done) break;
+            //     console.log(value);
+            // }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>
+
+</body>
+</html>
